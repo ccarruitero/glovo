@@ -1,5 +1,10 @@
 require "glovo/version"
+require "glovo/configuration"
+require "glovo/client"
 
 module Glovo
-  # Your code goes here...
+  def self.configure
+    self.configuration ||= Configuration.new
+    yield(configuration)
+  end
 end
