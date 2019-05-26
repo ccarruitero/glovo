@@ -1,6 +1,6 @@
 # Glovo
 
-A gem to use Glovo API
+A gem to use [Glovo API](https://api-docs.glovoapp.com/b2b/index.html#introduction)
 
 ## Installation
 
@@ -20,7 +20,79 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Before you start using thie gem, you need to setup your Glovo's credentials.
+
+```ruby
+Glovo.configure do |config|
+  config.api_key = 'YOUR_API_KEY'
+  config.api_secret = 'YOUR_API_SECRET'
+  config.env = 'GLOVO_ENVIRONMENT'
+end
+```
+
+### initiate client
+
+```ruby
+client = Glovo::Client.new
+```
+
+### get working areas
+
+```ruby
+client.working_areas
+```
+
+Note: You still need to decrypt Glovo's working areas polygons. You can found an
+example in [wiki]()
+
+### estimate order cost
+
+```ruby
+order_params = {
+  "scheduleTime": 12344566,
+  "description": "A 30cm by 30cm box",
+  "addresses": [
+    {
+      "type": "PICKUP",
+      "lat": 0.1,
+      "lon": 0.3,
+      "label": "Calle la X, 29"
+    },
+    {
+      "type": "DELIVERY",
+      "lat": 0.1,
+      "lon": 0.3,
+      "label": "Calle la X, 30"
+    }
+  ]
+}
+
+client.estimate_order(order_params)
+```
+
+### create order
+
+```ruby
+client.create_order(order_params)
+```
+
+### get order
+
+```ruby
+client.get_order(order_id)
+```
+
+### track order
+
+```ruby
+client.track_order(order_id)
+```
+
+### cancel order
+
+```ruby
+client.cancel_order(order_id)
+```
 
 ## Development
 
