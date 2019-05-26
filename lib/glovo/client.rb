@@ -6,11 +6,12 @@ require 'glovo/configuration'
 module Glovo
   class Client
     def working_areas
-      request('get', "https://#{host}/b2b/working-areas")
+      res = request('get', "https://#{host}/b2b/working-areas")
+
       if res.code != 200
         Glovo::ResponseError.new "Server returned with #{res.code} status code"
       else
-        parse_response res.body
+        parse_response res
       end
     end
 
@@ -20,10 +21,10 @@ module Glovo
     end
 
     def headers
-      enc = Base64.encode64(Glovo.configuration.api_key, Glovo.configuration.api_secret)
+      enc = Base64.urlsafe_encode64("#{Glovo.configuration.api_key}:#{Glovo.configuration.api_secret}")
       {
         'Content-Type' => 'application/json',
-        'Authorization' => enc
+        'Authorization' => "Basic #{enc}"
       }
     end
 
