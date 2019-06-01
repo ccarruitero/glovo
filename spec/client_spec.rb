@@ -1,27 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.describe Glovo::Client do
-  let(:cli) { described_class.new } 
-  let(:invalid_params) {
-    {
-      'scheduleTime': 12344566,
-      'description': 'A 30cm by 30cm box',
-      'addresses': [
-        {
-          'type': 'PICKUP',
-          'lat': 0.1,
-          'lon': 0.3,
-          'label': 'Calle la X, 29'
-        },
-        {
-          'type': 'DELIVERY',
-          'lat': 0.15,
-          'lon': 0.3,
-          'label': 'Calle la X, 30'
-        }
-      ]
-    }
-  }
+  let(:cli) { described_class.new }
+  let(:invalid_params) { FactoryBot.build(:invalid_params) }
 
   before do
     Glovo.configure do |c|
@@ -37,6 +18,7 @@ RSpec.describe Glovo::Client do
 
   it '#estimate_cost with invalid params' do
     expect(cli.estimate_cost(invalid_params)).to eq(
-      Glovo::ResponseError.new(400))
+      Glovo::ResponseError.new(400)
+    )
   end
 end

@@ -1,6 +1,10 @@
+# frozen_string_literal: true
+
 require 'bundler/setup'
 require 'glovo'
 require 'pry'
+require 'factory_bot'
+require 'factories'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

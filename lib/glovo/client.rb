@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 require 'json'
 require 'base64'
 require 'httparty'
 require 'glovo/configuration'
 
 module Glovo
+  # a Glovo HTTP Client
   class Client
     # Returns the characteristics of Glovo's working areas.
     # This data will be used to check for valid pickup and delivery locations,
@@ -38,32 +41,38 @@ module Glovo
 
     # Return the position (latitude, longitude) of the courier.
     def track_order(order_id)
-      res = request('get', "https://#{host}/b2b/orders/#{order_id}/tracking")
+      res = request('get', "https://#{orders_path}/#{order_id}/tracking")
       parse_response res
     end
 
     # Name and contact phone of the courier if the order is active.
     # Error if the order is not active.
     def order_courier(order_id)
-      res = request('get', "https://#{host}/b2b/orders/#{order_id}/courier-contact")
+      res = request('get', "https://#{orders_path}/#{order_id}/courier-contact")
       parse_response res
     end
 
     # Cancel a scheduled order. Active orders cannot be canceled.
     def cancel_order(order_id)
-      res = request('post', "https://#{host}/b2b/orders/#{order_id}/cancel")
+      res = request('post', "https://#{orders_path}/#{order_id}/cancel")
       parse_response res
     end
 
     private
 
     def host
-      prefix = %w[sandbox test].include?(Glovo.configuration&.env) ? 'stage' : ''
+      test_env = %w[sandbox test]
+      prefix = test_env.include?(Glovo.configuration&.env) ? 'stage' : ''
       "#{prefix}api.glovoapp.com"
     end
 
+    def orders_path
+      "#{host}/b2b/orders"
+    end
+
     def headers
-      enc = Base64.urlsafe_encode64("#{Glovo.configuration.api_key}:#{Glovo.configuration.api_secret}")
+      api_key, api_secret = Glovo.configuration
+      enc = Base64.urlsafe_encode64("#{api_key}:#{api_secret}")
       {
         'Content-Type' => 'application/json',
         'Authorization' => "Basic #{enc}"
