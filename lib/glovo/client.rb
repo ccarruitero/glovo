@@ -11,11 +11,7 @@ module Glovo
     def working_areas
       res = request('get', "https://#{host}/b2b/working-areas")
 
-      if res.code != 200
-        Glovo::ResponseError.new "Server returned with #{res.code} status code"
-      else
-        parse_response res
-      end
+      parse_response res
     end
 
     # Provide a price estimation for an order.
@@ -79,7 +75,11 @@ module Glovo
     end
 
     def parse_response(res)
-      JSON.parse(res.body)
+      if res.code != 200
+        Glovo::ResponseError.new res.code
+      else
+        JSON.parse(res.body)
+      end
     end
   end
 end
