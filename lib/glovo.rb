@@ -1,6 +1,6 @@
-require "glovo/version"
-require "glovo/configuration"
-require "glovo/client"
+require 'glovo/version'
+require 'glovo/configuration'
+require 'glovo/client'
 require 'glovo/error/response_error'
 
 module Glovo

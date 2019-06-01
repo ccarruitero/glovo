@@ -1,9 +1,9 @@
 RSpec.describe Glovo do
-  it "has a version number" do
+  it 'has a version number' do
     expect(Glovo::VERSION).not_to be nil
   end
 
-  it "does something useful" do
-    expect(false).to eq(true)
+  it 'has configuration' do
+    expect(Glovo.configuration).not_to be nil
   end
 end
