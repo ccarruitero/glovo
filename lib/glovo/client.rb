@@ -13,7 +13,6 @@ module Glovo
     # and times
     def working_areas
       res = request('get', "https://#{host}/b2b/working-areas")
-
       parse_response res
     end
 
@@ -21,7 +20,7 @@ module Glovo
     # The response amount will always be in the minor of the currency
     # (e.g. cents for EUR).
     def estimate_cost(order_params)
-      res = request('post', "https://#{host}/b2b/orders/estimate", order_params)
+      res = request('post', "https://#{orders_path}/estimate", order_params)
       parse_response res
     end
 
@@ -29,13 +28,13 @@ module Glovo
     # If you want to schedule an order, provide a scheduleTime. If you don't,
     # it'll be immediately activated for deliver.
     def create_order(order_params)
-      res = request('post', "https://#{host}/b2b/orders", order_params)
+      res = request('post', "https://#{orders_path}", order_params)
       parse_response res
     end
 
     # Retrieve information about a single order.
     def get_order(order_id)
-      res = request('get', "https://#{host}/b2b/orders/#{order_id}")
+      res = request('get', "https://#{orders_path}/#{order_id}")
       parse_response res
     end
 
